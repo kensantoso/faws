@@ -1,0 +1,4 @@
+Measured full-scale vend (FAWS_SCALE_VEND=1), 2026-09-24T08:11:58Z
+profiles vended: 496
+total wall time: 2m5.109694292s
+mean per profile: 252.237286ms

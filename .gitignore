@@ -1,0 +1,6 @@
+/faws
+/dist/
+/e2e/out/.work/
+/e2e/out/aws/
+/e2e/scale/out/.work/
+/e2e/scale/out/aws/

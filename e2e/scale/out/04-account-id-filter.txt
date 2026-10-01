@@ -1,0 +1,7 @@
+$ faws --all 110000000002
+org11-acct2/ReadOnly      110000000002  ReadOnly      us-east-1       ← granted_sso_account_id
+org11-acct2/PowerUser     110000000002  PowerUser     us-west-2       ← granted_sso_account_id
+org11-acct2/Admin         110000000002  Admin         eu-west-1       ← granted_sso_account_id
+org11-acct2/ReadOnlyPlus  110000000002  ReadOnlyPlus  ap-southeast-2  ← granted_sso_account_id
+4 profiles
+(exit 0)

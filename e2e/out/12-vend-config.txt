@@ -1,0 +1,14 @@
+$ faws --all 111111111111,readonly -o OUT/agent.config
+  [1/1] acme-dev/ReadOnly
+wrote OUT/agent.config (0600) · 1 profile(s) · expires in 1h0m
+(exit 0)
+$ cat OUT/agent.config
+# faws-filter: --all 111111111111,readonly
+
+[profile acme-dev/ReadOnly]
+aws_access_key_id = ASIAFAKE3288544103
+aws_secret_access_key = fake-secret-3288544103
+aws_session_token = fake-session-3288544103
+region = us-east-1
+# expires 2026-09-24T13:05:04+00:00
+(exit 0)

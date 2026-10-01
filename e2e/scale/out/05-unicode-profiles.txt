@@ -1,0 +1,8 @@
+$ faws --all café
+café-prod/ReadOnly  990000000020  ReadOnly  us-east-1  ← name
+1 profile
+(exit 0)
+$ faws --all 京
+東京-dev/ReadOnly  990000000021  ReadOnly  us-east-1  ← name
+1 profile
+(exit 0)

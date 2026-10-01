@@ -1,0 +1,4 @@
+$ faws --all globex,readonly
+globex-dev/ReadOnly  555555555555  ReadOnly  eu-west-1  ← name
+1 profile
+(exit 0)

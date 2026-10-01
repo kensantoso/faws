@@ -1,0 +1,6 @@
+$ faws --clear FIXTURE/aws/credentials
+faws: refusing to delete FIXTURE/aws/credentials: FIXTURE/aws/credentials has no # faws-filter: line, so faws will not touch it. Either faws did not write it, or it was written with --format json — faws cannot mark json files, because a "#" line would make them invalid JSON
+(exit 2)
+$ ls FIXTURE/aws/credentials
+FIXTURE/aws/credentials
+(exit 0)

@@ -1,0 +1,25 @@
+# 500-ish profiles: head -20 of the listing, plus the count line. See scale_test.go's TestParseCounts for the exact count assertion (516: 480 base + 20 adversarial + 16 credentials-only, after config-wins collision resolution).
+$ faws | head -20   (plus the final count line; 518 total lines)
+warning: org05-acct3/Admin, nimbus, shouty-scale-a, mfa-a/ReadOnly appear in both FIXTURE/aws/config and FIXTURE/aws/credentials; faws's own filtering/display uses config, but the AWS CLI resolves credential keys from credentials first — see the README's Limitations
+org00-acct0/ReadOnly                                          000000000000  ReadOnly         us-east-1       
+org00-acct0/PowerUser                                         000000000000  PowerUser        us-west-2       
+org00-acct0/Admin                                             000000000000  Admin            eu-west-1       
+org00-acct0/ReadOnlyPlus                                      000000000000  ReadOnlyPlus     ap-southeast-2  
+org00-acct1/ReadOnly                                          000000000001  ReadOnly         eu-central-1    
+org00-acct1/PowerUser                                         000000000001  PowerUser        ca-central-1    
+org00-acct1/Admin                                             000000000001  Admin            us-east-1       
+org00-acct1/ReadOnlyPlus                                      000000000001  ReadOnlyPlus     us-west-2       
+org00-acct2/ReadOnly                                          000000000002  ReadOnly         eu-west-1       
+org00-acct2/PowerUser                                         000000000002  PowerUser        ap-southeast-2  
+org00-acct2/Admin                                             000000000002  Admin            eu-central-1    
+org00-acct2/ReadOnlyPlus                                      000000000002  ReadOnlyPlus     ca-central-1    
+org00-acct3/ReadOnly                                          000000000003  ReadOnly         us-east-1       
+org00-acct3/PowerUser                                         000000000003  PowerUser        us-west-2       
+org00-acct3/Admin                                             000000000003  Admin            eu-west-1       
+org00-acct3/ReadOnlyPlus                                      000000000003  ReadOnlyPlus     ap-southeast-2  
+org00-acct4/ReadOnly                                          000000000004  ReadOnly         eu-central-1    
+org00-acct4/PowerUser                                         000000000004  PowerUser        ca-central-1    
+org00-acct4/Admin                                             000000000004  Admin            us-east-1       
+...
+516 profiles
+(exit 0)

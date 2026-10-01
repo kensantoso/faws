@@ -1,0 +1,15 @@
+# item 5 regression guard: [profile "quoted space/Ops"] is read with its quotes stripped (matching botocore's shlex parsing), and must be re-quoted on write below — an unquoted 'quoted space/Ops' header would make the real AWS CLI's list-profiles silently drop the profile.
+$ faws --all 888888888888 -o OUT/quoted.config
+  [1/1] quoted space/Ops
+wrote OUT/quoted.config (0600) · 1 profile(s) · expires in 1h0m
+(exit 0)
+$ cat OUT/quoted.config
+# faws-filter: --all 888888888888
+
+[profile "quoted space/Ops"]
+aws_access_key_id = ASIAFAKE3064022582
+aws_secret_access_key = fake-secret-3064022582
+aws_session_token = fake-session-3064022582
+region = ca-central-1
+# expires 2026-09-24T13:05:06+00:00
+(exit 0)

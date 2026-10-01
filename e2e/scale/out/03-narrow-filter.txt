@@ -1,0 +1,4 @@
+$ faws --all 990000000010
+acctclose-a/ReadOnly  990000000010  ReadOnly  us-east-1  ← granted_sso_account_id
+1 profile
+(exit 0)

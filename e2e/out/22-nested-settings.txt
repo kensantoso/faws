@@ -1,0 +1,18 @@
+# item 3 regression guard: the profile's indented 's3' settings (max_concurrent_requests, addressing_style) must be re-emitted nested under 's3' below, not flattened into bogus top-level keys — the CLI's own 'aws configure get s3.max_concurrent_requests' only ever reads the nested form.
+$ faws --all nested-settings -o OUT/nested.config
+  [1/1] nested-settings/Viewer
+wrote OUT/nested.config (0600) · 1 profile(s) · expires in 1h0m
+(exit 0)
+$ cat OUT/nested.config
+# faws-filter: --all nested-settings
+
+[profile nested-settings/Viewer]
+aws_access_key_id = ASIAFAKE2782673581
+aws_secret_access_key = fake-secret-2782673581
+aws_session_token = fake-session-2782673581
+region = us-west-1
+s3 = 
+  max_concurrent_requests = 20
+  addressing_style = path
+# expires 2026-09-24T13:05:06+00:00
+(exit 0)

@@ -1,0 +1,91 @@
+════════════════════════════════════════════════════════════════════════
+ faws — start here
+════════════════════════════════════════════════════════════════════════
+
+VERDICT: mergeable. Everything builds, `go test ./...` is green including a
+hermetic end-to-end suite, and it is pushed to github.com/kensantoso/faws.
+
+The e2e suite was independently checked by breaking three separate lines of
+production code and confirming the right test failed each time. It is a real
+test, not decoration.
+
+────────────────────────────────────────────────────────────────────────
+ READ THESE IN THIS ORDER
+────────────────────────────────────────────────────────────────────────
+
+  nano e2e/README.md                  what the fixture is and how to re-run
+  nano e2e/aws/config                 the fake AWS config (2 orgs, 12 profiles)
+  nano e2e/aws/credentials            fake static-key profiles
+  nano e2e/fake-credential-process    the fake vendor (never touches AWS)
+
+  nano e2e/out/01-list-all.txt        every profile, no filter
+  nano e2e/out/02-by-name.txt         .. 20-bad-default.txt
+
+Every transcript has the command on the first line and the exit code last.
+Regenerate them all with:  ./e2e/run-samples.sh
+
+────────────────────────────────────────────────────────────────────────
+ THE SAMPLES THAT MATTER MOST
+────────────────────────────────────────────────────────────────────────
+
+08-per-account-roles   readonly in one account, poweruser in another — the
+                       case that needed two --all groups
+10-substring-gotcha    "readonly" also matches ReadOnlyPlus. Working as
+                       designed; the listing names the key that matched
+11-secrets-never-matched
+                       a profile with UPPERCASE secret keys whose secret
+                       VALUE contains "readonly" is NOT matched. Guards a
+                       real bug found in review
+16-refresh             a file written --format credentials --region X comes
+                       back with the format, the region AND the [default]
+                       block intact. Guards a silent-corruption bug
+18-clear-refusal       --clear pointed at a real credentials file refuses
+                       and leaves it on disk. The safety demo
+
+────────────────────────────────────────────────────────────────────────
+ HOW THE FIXTURE IS HERMETIC
+────────────────────────────────────────────────────────────────────────
+
+faws vends by shelling out to `aws configure export-credentials`. The fixture
+profiles use `credential_process = <fake script>`, so the real AWS CLI runs
+our fake vendor. Real code path, fake tokens, no network. HOME and the AWS_*
+env vars are repointed per-run, so nothing can reach your real ~/.aws.
+
+Every credential in the repo is prefixed FAKE. The fixture deliberately
+contains a role-chain profile (legacy-chain) that is listed but never vended,
+because vending it would make a real sts:AssumeRole call.
+
+────────────────────────────────────────────────────────────────────────
+ THINGS I DECIDED WHILE YOU SLEPT
+────────────────────────────────────────────────────────────────────────
+
+Full list with reasoning is in the session summary. The ones you may want to
+overturn:
+
+1. Filter terms may not contain whitespace — rejected with an error pointing
+   at the comma form, rather than escaped. Note: `--all my,work` is a
+   SUPERSET of a literal "my work", not an equivalent. Documented.
+
+2. The `# faws-filter:` marker that --clear checks is an accident-prevention
+   convention, NOT proof. A hand-written file carrying that line would be
+   accepted. Documented rather than hardened.
+
+3. Region is never inferred. sso_region is where Identity Center lives, not
+   where workloads run, so writing it would be wrong. Pass --region yourself.
+
+────────────────────────────────────────────────────────────────────────
+ KNOWN, DELIBERATE GAPS
+────────────────────────────────────────────────────────────────────────
+
+-o overwrites its target unconditionally — no marker check, no confirmation.
+Pointing it at ~/.aws/credentials WILL replace that file.
+
+Deferred to a later plan: Admin-role guard, --watch, --login, --parallel,
+saved selectors (@name), Windows ACLs (Go ignores file modes there, so 0600
+is not enforced on Windows), JSON listing output, shell completion,
+inexact-match markers.
+
+ONE THING WORTH KNOWING: your real ~/.aws/config has 11 profiles and all of
+them are AdministratorAccess-style. So on your actual config, essentially any
+filter that matches anything will vend admin credentials. That makes the
+deferred Admin guard more relevant to you than it looked in the abstract.

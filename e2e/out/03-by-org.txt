@@ -1,0 +1,9 @@
+$ faws --all acme
+acme-dev/ReadOnly        111111111111  ReadOnly      us-east-1       ← name
+acme-dev/PowerUser       111111111111  PowerUser     us-east-1       ← name
+acme-prod/ReadOnly       222222222222  ReadOnly      us-east-1       ← name
+acme-prod/Admin          222222222222  Admin         us-east-1       ← name
+acme-security/PowerUser  333333333333  PowerUser     ap-southeast-2  ← name
+acme-data/ReadOnlyPlus   444444444444  ReadOnlyPlus  us-east-1       ← name
+6 profiles
+(exit 0)

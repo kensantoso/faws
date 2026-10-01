@@ -1,0 +1,6 @@
+$ faws --all readonly --exclude prod
+acme-dev/ReadOnly       111111111111  ReadOnly      us-east-1  ← name
+acme-data/ReadOnlyPlus  444444444444  ReadOnlyPlus  us-east-1  ← name
+globex-dev/ReadOnly     555555555555  ReadOnly      eu-west-1  ← name
+3 profiles
+(exit 0)

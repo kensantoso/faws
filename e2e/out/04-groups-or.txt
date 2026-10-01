@@ -1,0 +1,12 @@
+# Groups OR together: a profile matching EITHER group below is listed. This is correct — not a filter bug.
+$ faws --any acme,globex --all readonly
+acme-dev/ReadOnly        111111111111  ReadOnly      us-east-1       ← name
+acme-dev/PowerUser       111111111111  PowerUser     us-east-1       ← name
+acme-prod/ReadOnly       222222222222  ReadOnly      us-east-1       ← name
+acme-prod/Admin          222222222222  Admin         us-east-1       ← name
+acme-security/PowerUser  333333333333  PowerUser     ap-southeast-2  ← name
+acme-data/ReadOnlyPlus   444444444444  ReadOnlyPlus  us-east-1       ← name
+globex-dev/ReadOnly      555555555555  ReadOnly      eu-west-1       ← name
+globex-prod/Admin        666666666666  Admin         eu-west-1       ← name
+8 profiles
+(exit 0)

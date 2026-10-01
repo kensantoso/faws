@@ -1,0 +1,15 @@
+$ faws --all acme-dev,readonly --format json -o OUT/agent.json
+  [1/1] acme-dev/ReadOnly
+wrote OUT/agent.json (0600) · 1 profile(s) · expires in 1h0m
+(exit 0)
+$ cat OUT/agent.json
+[
+  {
+    "Profile": "acme-dev/ReadOnly",
+    "AccessKeyId": "ASIAFAKE3288544103",
+    "SecretAccessKey": "fake-secret-3288544103",
+    "SessionToken": "fake-session-3288544103",
+    "Expiration": "2026-09-24T13:05:05+00:00"
+  }
+]
+(exit 0)

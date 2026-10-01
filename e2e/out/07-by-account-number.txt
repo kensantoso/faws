@@ -1,0 +1,4 @@
+$ faws --all 333333333333
+acme-security/PowerUser  333333333333  PowerUser  ap-southeast-2  ← granted_sso_account_id
+1 profile
+(exit 0)

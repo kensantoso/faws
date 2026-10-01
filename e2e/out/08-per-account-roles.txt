@@ -1,0 +1,5 @@
+$ faws --all 222222222222,readonly --all 333333333333,poweruser
+acme-prod/ReadOnly       222222222222  ReadOnly   us-east-1       ← granted_sso_account_id, name
+acme-security/PowerUser  333333333333  PowerUser  ap-southeast-2  ← granted_sso_account_id, name
+2 profiles
+(exit 0)

@@ -1,0 +1,135 @@
+# faws e2e fixture — AWS config template.
+#
+# __FAWS_E2E_DIR__ is substituted with the absolute path of e2e/ when this
+# file is rendered (by e2e/run-samples.sh into e2e/out/aws/config, and by
+# e2e/e2e_test.go into a t.TempDir() copy). The rendered file is what makes
+# this hermetic: every credential_process below runs our own fake vendor
+# script instead of contacting AWS.
+#
+# Profiles carry granted_sso_* keys (what granted itself writes) rather than
+# real sso_* keys, specifically so credential_process is the only thing the
+# AWS CLI can resolve against — faws reads the granted_sso_* keys purely for
+# filtering and display. Real sso_* keys alongside credential_process would
+# create resolution ambiguity that doesn't exist in fixtures built the way
+# granted actually builds them.
+
+[sso-session acme]
+sso_start_url = https://acme.awsapps.com/start
+sso_region    = us-east-1
+
+[services x]
+s3 =
+  endpoint_url = https://example.invalid
+
+[profile acme-dev/ReadOnly]
+granted_sso_start_url  = https://acme.awsapps.com/start
+granted_sso_region     = us-east-1
+granted_sso_account_id = 111111111111
+granted_sso_role_name  = ReadOnly
+region                 = us-east-1
+credential_process     = __FAWS_E2E_DIR__/fake-credential-process acme-dev/ReadOnly
+
+[profile acme-dev/PowerUser]
+granted_sso_start_url  = https://acme.awsapps.com/start
+granted_sso_region     = us-east-1
+granted_sso_account_id = 111111111111
+granted_sso_role_name  = PowerUser
+region                 = us-east-1
+credential_process     = __FAWS_E2E_DIR__/fake-credential-process acme-dev/PowerUser
+
+[profile acme-prod/ReadOnly]
+granted_sso_start_url  = https://acme.awsapps.com/start
+granted_sso_region     = us-east-1
+granted_sso_account_id = 222222222222
+granted_sso_role_name  = ReadOnly
+region                 = us-east-1
+credential_process     = __FAWS_E2E_DIR__/fake-credential-process acme-prod/ReadOnly
+
+[profile acme-prod/Admin]
+granted_sso_start_url  = https://acme.awsapps.com/start
+granted_sso_region     = us-east-1
+granted_sso_account_id = 222222222222
+granted_sso_role_name  = Admin
+region                 = us-east-1
+credential_process     = __FAWS_E2E_DIR__/fake-credential-process acme-prod/Admin
+
+[profile acme-security/PowerUser]
+granted_sso_start_url  = https://acme.awsapps.com/start
+granted_sso_region     = us-east-1
+granted_sso_account_id = 333333333333
+granted_sso_role_name  = PowerUser
+region                 = ap-southeast-2
+credential_process     = __FAWS_E2E_DIR__/fake-credential-process acme-security/PowerUser
+
+[profile acme-data/ReadOnlyPlus]
+granted_sso_start_url  = https://acme.awsapps.com/start
+granted_sso_region     = us-east-1
+granted_sso_account_id = 444444444444
+granted_sso_role_name  = ReadOnlyPlus
+region                 = us-east-1
+credential_process     = __FAWS_E2E_DIR__/fake-credential-process acme-data/ReadOnlyPlus
+
+[profile globex-dev/ReadOnly]
+granted_sso_start_url  = https://globex.awsapps.com/start
+granted_sso_region     = us-east-1
+granted_sso_account_id = 555555555555
+granted_sso_role_name  = ReadOnly
+region                 = eu-west-1
+credential_process     = __FAWS_E2E_DIR__/fake-credential-process globex-dev/ReadOnly
+
+[profile globex-prod/Admin]
+granted_sso_start_url  = https://globex.awsapps.com/start
+granted_sso_region     = us-east-1
+granted_sso_account_id = 666666666666
+granted_sso_role_name  = Admin
+region                 = eu-west-1
+credential_process     = __FAWS_E2E_DIR__/fake-credential-process globex-prod/Admin
+
+# Item 5 regression fixture: a quoted section name containing a space.
+# botocore shlex-parses [profile "..."] down to the unquoted name, so faws
+# must both read it that way (pkg/awsconfig.stripQuotes) AND re-quote it on
+# write (pkg/output.quoteSectionName) — writing it back bare makes
+# `aws configure list-profiles` silently omit the profile. Distinct
+# start-url/account/region values, so it can't accidentally be swept into any
+# other sample case's acme/globex/readonly-style filter.
+[profile "quoted space/Ops"]
+granted_sso_start_url  = https://quotedspace.awsapps.com/start
+granted_sso_region     = ca-central-1
+granted_sso_account_id = 888888888888
+granted_sso_role_name  = Ops
+region                 = ca-central-1
+credential_process     = __FAWS_E2E_DIR__/fake-credential-process "quoted space/Ops"
+
+# Item 3 regression fixture: a botocore-nested setting (an indented
+# continuation under a parent key). The parser used to flatten
+# max_concurrent_requests/addressing_style into bogus top-level keys, so the
+# vended file carried an empty `s3 =` plus two keys the CLI can never see —
+# `aws configure get s3.max_concurrent_requests` returned nothing. Distinct
+# org/account/region/role, so it can't be swept into any other sample case's
+# filter.
+[profile nested-settings/Viewer]
+granted_sso_start_url  = https://nestedcfg.awsapps.com/start
+granted_sso_region     = us-west-1
+granted_sso_account_id = 999999999901
+granted_sso_role_name  = Viewer
+region                 = us-west-1
+s3 =
+  max_concurrent_requests = 20
+  addressing_style = path
+credential_process     = __FAWS_E2E_DIR__/fake-credential-process nested-settings/Viewer
+
+# Not vended by any sample: a role-chain profile, present only to prove
+# filter visibility (it is listed) without ever being resolved (resolving it
+# for real would need a genuine sts:AssumeRole network call, which the
+# sample runs never make).
+[profile legacy-chain]
+role_arn       = arn:aws:iam::777777777777:role/LegacyAdmin
+source_profile = legacy-base
+
+# Not vended by any sample: the regression fixture for the case-insensitive
+# secret-exclusion fix. Its keys are UPPERCASE and its secret VALUE contains
+# the string "readonly" — a correct faws must never match on it (see
+# pkg/filter.SecretKeys and pkg/awsconfig.cutKV's key-lowercasing).
+[profile shouty-static]
+AWS_ACCESS_KEY_ID     = AKIAFAKEUPPERCASE
+AWS_SECRET_ACCESS_KEY = uppercase-secret-containing-readonly-bait

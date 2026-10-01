@@ -1,0 +1,6 @@
+$ faws --all readonly --default nope -o OUT/x.config
+faws: --default "nope" is not among the 4 resolved profiles
+(exit 5)
+$ ls OUT/x.config
+ls: OUT/x.config: No such file or directory
+(exit 1)

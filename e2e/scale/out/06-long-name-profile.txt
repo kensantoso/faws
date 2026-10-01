@@ -1,0 +1,5 @@
+# Profile name is 238 characters; the listing display middle-elides it at 60 runes so this one outlier can't pad every other row's tabwriter column. The full name still matches the filter and is what gets vended/written.
+$ faws --all longname-
+longname-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx…/ReadOnly  990000000030  ReadOnly  us-east-1  ← name
+1 profile
+(exit 0)

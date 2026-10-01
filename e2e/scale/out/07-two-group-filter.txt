@@ -1,0 +1,18 @@
+$ faws --all org03,readonly --all org19,poweruser
+org03-acct0/ReadOnly      030000000000  ReadOnly      us-east-1       ← name
+org03-acct0/ReadOnlyPlus  030000000000  ReadOnlyPlus  ap-southeast-2  ← name
+org03-acct1/ReadOnly      030000000001  ReadOnly      eu-central-1    ← name
+org03-acct1/ReadOnlyPlus  030000000001  ReadOnlyPlus  us-west-2       ← name
+org03-acct2/ReadOnly      030000000002  ReadOnly      eu-west-1       ← name
+org03-acct2/ReadOnlyPlus  030000000002  ReadOnlyPlus  ca-central-1    ← name
+org03-acct3/ReadOnly      030000000003  ReadOnly      us-east-1       ← name
+org03-acct3/ReadOnlyPlus  030000000003  ReadOnlyPlus  ap-southeast-2  ← name
+org03-acct4/ReadOnly      030000000004  ReadOnly      eu-central-1    ← name
+org03-acct4/ReadOnlyPlus  030000000004  ReadOnlyPlus  us-west-2       ← name
+org19-acct0/PowerUser     190000000000  PowerUser     ap-southeast-2  ← name
+org19-acct1/PowerUser     190000000001  PowerUser     us-west-2       ← name
+org19-acct2/PowerUser     190000000002  PowerUser     ca-central-1    ← name
+org19-acct3/PowerUser     190000000003  PowerUser     ap-southeast-2  ← name
+org19-acct4/PowerUser     190000000004  PowerUser     us-west-2       ← name
+15 profiles
+(exit 0)

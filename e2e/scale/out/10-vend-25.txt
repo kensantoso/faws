@@ -1,0 +1,39 @@
+# 25 profiles selected by --any per name: org00's full 20, plus nimbus/nimbus-extra/café-prod/東京-dev/emptyrole-profile.
+$ faws --any org00-acct0/ReadOnly ... (25 --any terms total) -o OUT/vend25.config
+warning: nimbus appears in both FIXTURE/aws/config and FIXTURE/aws/credentials; faws's own filtering/display uses config, but the AWS CLI resolves credential keys from credentials first — see the README's Limitations
+  [1/25] org00-acct0/ReadOnly
+  [2/25] org00-acct0/PowerUser
+  [3/25] org00-acct0/Admin
+  [4/25] org00-acct0/ReadOnlyPlus
+  [5/25] org00-acct1/ReadOnly
+  [6/25] org00-acct1/PowerUser
+  [7/25] org00-acct1/Admin
+  [8/25] org00-acct1/ReadOnlyPlus
+  [9/25] org00-acct2/ReadOnly
+  [10/25] org00-acct2/PowerUser
+  [11/25] org00-acct2/Admin
+  [12/25] org00-acct2/ReadOnlyPlus
+  [13/25] org00-acct3/ReadOnly
+  [14/25] org00-acct3/PowerUser
+  [15/25] org00-acct3/Admin
+  [16/25] org00-acct3/ReadOnlyPlus
+  [17/25] org00-acct4/ReadOnly
+  [18/25] org00-acct4/PowerUser
+  [19/25] org00-acct4/Admin
+  [20/25] org00-acct4/ReadOnlyPlus
+  [21/25] nimbus
+  [22/25] nimbus-extra
+  [23/25] café-prod/ReadOnly
+  [24/25] 東京-dev/ReadOnly
+  [25/25] emptyrole-profile
+wrote OUT/vend25.config (0600) · 25 profile(s) · expires in 1h0m
+(exit 0)
+# One block from vend25.config, showing FIX 1 at scale: the profile's own region is carried forward, its granted_sso_*/credential_process acquisition keys are not.
+$ sed -n "/\[profile org00-acct0\/ReadOnly\]/,/^$/p" OUT/vend25.config
+[profile org00-acct0/ReadOnly]
+aws_access_key_id = ASIAFAKE2838198668
+aws_secret_access_key = fake-secret-2838198668
+aws_session_token = fake-session-2838198668
+region = us-east-1
+# expires 2026-09-24T13:05:07+00:00
+(exit 0)

@@ -1,0 +1,7 @@
+$ faws --all acme-dev,readonly --format env -o -
+  [1/1] acme-dev/ReadOnly
+export AWS_ACCESS_KEY_ID=ASIAFAKE3288544103
+export AWS_SECRET_ACCESS_KEY=fake-secret-3288544103
+export AWS_SESSION_TOKEN=fake-session-3288544103
+export AWS_REGION=us-east-1
+(exit 0)

@@ -1,0 +1,39 @@
+faws e2e/scale timing report
+generated 2026-09-24T12:05:14Z by run-samples.sh on Darwin arm64
+aws CLI: aws-cli/2.36.41 Python/3.14.7 Darwin/24.2.0 source/arm64
+
+== Parse + filter + list (no vend; no AWS calls at all) ==
+516 profiles parsed and listed (no filter):    23 ms
+broad filter (--all readonly, ~250 matches):    23 ms
+narrow filter (--all <exact account id>, 1):    23 ms
+(go test's TestParseFilterListTiming asserts all three stay under a 2s ceiling
+ and logs its own in-process numbers, which exclude process-start overhead that
+ these shell-measured numbers include.)
+
+== Vend timing (each vend shells out to `aws configure export-credentials`
+   once per profile; vending is serial by construction — concurrent MFA
+   prompts would interleave into garbage) ==
+25-profile vend:              6636 ms total, 265 ms/profile mean
+extrapolated 500-profile vend: ~132 s (~2m 12s), linear from the above
+
+== Measured full-scale vend (FAWS_SCALE_VEND=1 go test) ==
+Measured full-scale vend (FAWS_SCALE_VEND=1), 2026-09-24T08:11:58Z
+profiles vended: 496
+total wall time: 2m5.109694292s
+mean per profile: 252.237286ms
+
+== What this means for the deferred --parallel feature ==
+Vending is one `aws` subprocess per profile, run serially, and each subprocess
+pays Python/botocore startup cost (aws CLI is a Python program) on top of the
+fake vendor's own negligible work. At ~265 ms/profile, a filter that resolves to
+hundreds of profiles (plausible at this fixture's scale: --all readonly alone
+matches ~250 of the 516) takes multiple MINUTES to vend, not seconds — this is
+the finding the brief asked this report to make in plain numbers, not a vague
+'it might be slow.' A --parallel flag would cut that wall time roughly in
+proportion to the worker count for any selection with no mfa_serial profiles in
+it (MFA profiles cannot be parallelized: TOTP codes rotate every 30s and cannot
+be reused across AssumeRole calls, so they are inherently serial and must stay
+last regardless of what --parallel does to the rest of the batch). Given that
+this fixture alone can produce multi-hundred-profile broad filters and multi-
+minute vend times, --parallel is a real, not theoretical, need at this scale —
+the deferral should be revisited, not left indefinitely.

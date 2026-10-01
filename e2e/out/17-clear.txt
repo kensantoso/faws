@@ -1,0 +1,6 @@
+$ faws --clear OUT/agent.config
+removed OUT/agent.config
+(exit 0)
+$ ls OUT/agent.config
+ls: OUT/agent.config: No such file or directory
+(exit 1)
