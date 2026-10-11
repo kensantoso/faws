@@ -1,9 +1,15 @@
 # faws
 
+[![Go Reference](https://pkg.go.dev/badge/github.com/kensantoso/faws.svg)](https://pkg.go.dev/github.com/kensantoso/faws)
+[![Go Report Card](https://goreportcard.com/badge/github.com/kensantoso/faws)](https://goreportcard.com/report/github.com/kensantoso/faws)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
 Filter your AWS roles, writes multiple the credentials into a file.
 
 faws picks profiles from your AWS config and writes their credentials to a static file so that your AI agents can assume and make api calls to multiple aws accounts. 
 It uses `aws configure export-credentials` so that `credentials_process` etc will work and you don't need to give the sandbox access to key stores. It's designed to give an agent in a sandbox access to different profiles to do it's job. e.g. Readonly, cloudtrail + investigator, etc
+
+![faws demo](demo/faws.gif)
 
 ## Install
 
