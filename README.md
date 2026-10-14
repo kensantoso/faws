@@ -1,7 +1,6 @@
 # faws
 
 [![Go Reference](https://pkg.go.dev/badge/github.com/kensantoso/faws.svg)](https://pkg.go.dev/github.com/kensantoso/faws)
-[![Go Report Card](https://goreportcard.com/badge/github.com/kensantoso/faws)](https://goreportcard.com/report/github.com/kensantoso/faws)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 Filter your AWS roles, writes multiple the credentials into a file.
